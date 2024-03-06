@@ -76,7 +76,7 @@
         let tg = window.Telegram.WebApp;
         let create_giveaway = document.getElementById("create");
         tg.expand();
-
+    
         create_giveaway.addEventListener("click", () => {
             let name = document.getElementById("contest_name").value;
             let desc = document.getElementById("contest_description").value;
@@ -87,11 +87,19 @@
                 desc: desc,
                 prize: prize
             }
-
-            tg.sendData(JSON.stringify(data));
-
-            tg.close();
+    
+            // Отправляем данные
+            tg.sendData(JSON.stringify(data))
+              .then(() => {
+                  // После успешной отправки закрываем окно
+                  tg.close();
+              })
+              .catch(error => {
+                  console.error('Ошибка отправки данных:', error);
+                  // Возможно, здесь вы захотите обработать ошибку
+              });
         }); 
     </script>
+    
 </body>
 </html>
