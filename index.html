@@ -59,7 +59,7 @@
 <body>
     <div class="container">
         <h1>Создание нового конкурса</h1>
-        <form id="contest-form" action="/index" method="post">
+        <form id="contest-form" action="#" method="post">
             <label for="contest-name">Название конкурса:</label>
             <input type="text" id="contest-name" name="contest-name" required><br><br>
             <label for="contest-description">Описание конкурса:</label><br>
@@ -73,7 +73,7 @@
     <script>
         document.getElementById('contest-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Предотвращаем отправку формы
-            window.location.href = '/index'; // Перенаправляем на страницу index.html
+            window.location.href = '#'; // Перенаправляем на страницу index.html
         });
     </script>
 </body>
