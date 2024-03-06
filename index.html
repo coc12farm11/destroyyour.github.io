@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моя локальная страница</title>
+    <title>Create Contest</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Добро пожаловать на мою локальную страницу!</h1>
-    <p>Это пример HTML-шаблона.</p>
+    <div class="container">
+        <h1>Create Contest</h1>
+        <form id="contestForm">
+            <label for="title">Contest Title:</label><br>
+            <input type="text" id="title" name="title"><br>
+            <label for="description">Description:</label><br>
+            <textarea id="description" name="description"></textarea><br>
+            <button type="submit">Create Contest</button>
+        </form>
+    </div>
 </body>
 </html>
