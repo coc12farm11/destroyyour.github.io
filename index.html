@@ -43,7 +43,7 @@
             box-sizing: border-box;
         }
 
-        input[type="submit"] {
+        #create {
             width: 100%;
             padding: 10px;
             background-color: #007bff;
@@ -54,7 +54,7 @@
             transition: background-color 0.3s;
         }
 
-        input[type="submit"]:hover {
+        #create:hover {
             background-color: #0056b3;
         }
     </style>
@@ -69,7 +69,7 @@
             <textarea id="contest-description" name="contest_description" rows="4" required></textarea>
             <label for="contest-prize">🎁 Приз:</label>
             <input type="text" id="contest-prize" name="contest_prize" required>
-            <input id="create" type="submit" value="Создать конкурс">
+            <button id="create" type="submit">Создать конкурс</button>
         </form>
     </div>
     <script>
