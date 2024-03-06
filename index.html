@@ -59,15 +59,22 @@
 <body>
     <div class="container">
         <h1>Создание нового конкурса</h1>
-        <form id="contest-form" action="/create_contest" method="post">
+        <form id="contest-form" action="/index" method="post">
             <label for="contest-name">Название конкурса:</label>
-            <input type="text" id="contest-name" name="contest-name" required>
-            <label for="contest-description">Описание конкурса:</label>
-            <textarea id="contest-description" name="contest-description" rows="4" required></textarea>
+            <input type="text" id="contest-name" name="contest-name" required><br><br>
+            <label for="contest-description">Описание конкурса:</label><br>
+            <textarea id="contest-description" name="contest-description" rows="4" required></textarea><br><br>
             <label for="contest-prize">Приз:</label>
-            <input type="text" id="contest-prize" name="contest-prize" required>
+            <input type="text" id="contest-prize" name="contest-prize" required><br><br>
             <input type="submit" value="Создать конкурс">
         </form>
     </div>
+
+    <script>
+        document.getElementById('contest-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Предотвращаем отправку формы
+            window.location.href = '/index'; // Перенаправляем на страницу index.html
+        });
+    </script>
 </body>
 </html>
