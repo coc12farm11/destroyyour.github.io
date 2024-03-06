@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Создание конкурса</title>
@@ -72,6 +71,7 @@
             <button id="create">Создать конкурс</button>
         </form>
     </div>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         let tg = window.Telegram.WebApp;
         let create_giveaway = document.getElementById("create");
@@ -81,6 +81,14 @@
             let name = document.getElementById("contest_name").value;
             let desc = document.getElementById("contest_description").value;
             let prize = document.getElementById("contest_prize").value;
+            
+            let data = {
+                name: name,
+                desc: desc,
+                prize: prize
+            }
+
+            tg.sendData(JSON.stringify(data));
 
             tg.close();
         }); 
