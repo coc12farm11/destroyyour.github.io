@@ -68,6 +68,7 @@
             <textarea id="contest-description" name="contest_description" rows="4" required></textarea>
             <label for="contest-prize">🎁 Приз:</label>
             <input type="text" id="contest-prize" name="contest_prize" required>
+            <div id="error"></div>
             <button id="create">Создать конкурс</button>
         </form>
     </div>
@@ -78,6 +79,7 @@
         tg.expand();
     
         create_giveaway.addEventListener("click", () => {
+            document.getElementById("error").innerText = '';
             let name = document.getElementById("contest_name").value;
             let desc = document.getElementById("contest_description").value;
             let prize = document.getElementById("contest_prize").value;
@@ -95,7 +97,7 @@
                   tg.close();
               })
               .catch(error => {
-                  console.error('Ошибка отправки данных:', error);
+                document.getElementById("error").innerText = 'Ошибка отправки данных:', error;
                   // Возможно, здесь вы захотите обработать ошибку
               });
         }); 
