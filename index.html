@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Создание конкурса</title>
@@ -69,33 +70,5 @@
             <input type="submit" value="Создать конкурс">
         </form>
     </div>
-
-    <script>
-        document.getElementById('contest-form').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const contestName = document.getElementById('contest-name').value;
-            const contestDescription = document.getElementById('contest-description').value;
-            const contestPrize = document.getElementById('contest-prize').value;
-
-            const response = await fetch('/submit_contest', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    contestName: contestName,
-                    contestDescription: contestDescription,
-                    contestPrize: contestPrize
-                })
-            });
-
-            if (response.ok) {
-                alert('Конкурс успешно создан!');
-            } else {
-                alert('Ошибка при создании конкурса.');
-            }
-        });
-    </script>
 </body>
 </html>
