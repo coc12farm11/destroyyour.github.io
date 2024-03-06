@@ -3,18 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Contest</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Создание конкурса</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Create Contest</h1>
-        <form id="contestForm">
-            <label for="title">Contest Title:</label><br>
-            <input type="text" id="title" name="title"><br>
-            <label for="description">Description:</label><br>
-            <textarea id="description" name="description"></textarea><br>
-            <button type="submit">Create Contest</button>
+        <h1>Создание нового конкурса</h1>
+        <form id="contest-form">
+            <label for="contest-name">Название конкурса:</label>
+            <input type="text" id="contest-name" name="contest-name" required>
+            <label for="contest-description">Описание конкурса:</label>
+            <textarea id="contest-description" name="contest-description" rows="4" required></textarea>
+            <label for="contest-prize">Приз:</label>
+            <input type="text" id="contest-prize" name="contest-prize" required>
+            <input type="submit" value="Создать конкурс">
         </form>
     </div>
 </body>
