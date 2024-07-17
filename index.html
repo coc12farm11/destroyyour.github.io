@@ -2,106 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Создание конкурса</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Бегун</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: var(--tg-theme-text-color);
-            background: var(--tg-theme-bg-color);
+            margin: 0;
+            background-color: #f0f0f0;
         }
-
-        .container {
-            max-width: 500px;
-            width: 100%;
-            padding: 20px;
-            background: var(--tg-theme-bg-color);
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
+        #game {
             text-align: center;
+        }
+        #character {
+            font-size: 40px;
             margin-bottom: 20px;
-            color: var(--tg-theme-text-color);
         }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
+        #ground {
+            width: 200px;
+            height: 20px;
+            background-color: #333;
+            margin: 0 auto;
         }
-
-        #create {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        #create:hover {
-            background-color: #0056b3;
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎉 Создание нового конкурса</h1>
-        <form id="contest-form">
-            <label for="contest-name">✏️ Название конкурса:</label>
-            <input type="text" id="contest_name" name="contest_name" required>
-            <label for="contest-description">💬 Описание конкурса:</label>
-            <textarea id="contest_description" name="contest_description" rows="4" required></textarea>
-            <label for="contest-prize">🎁 Приз:</label>
-            <input type="text" id="contest_prize" name="contest_prize" required>
-            <div id="error"></div>
-            <button id="create">Создать конкурс</button>
-        </form>
+    <div id="game">
+        <div id="character">🏃</div>
+        <div id="ground"></div>
+        <div id="score">Счет: 0</div>
+        <button id="jumpButton">Прыгать</button>
     </div>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <script>
-        let tg = window.Telegram.WebApp;
-        let create_giveaway = document.getElementById("create");
-        tg.expand();
-    
-        create_giveaway.addEventListener("click", () => {
-            document.getElementById("error").innerText = '';
-            let name = document.getElementById("contest_name").value;
-            let desc = document.getElementById("contest_description").value;
-            let prize = document.getElementById("contest_prize").value;
-            
-            let data = {
-                name: name,
-                desc: desc,
-                prize: prize
+        let score = 0;
+        let isJumping = false;
+        const character = document.getElementById('character');
+        const scoreDisplay = document.getElementById('score');
+        const jumpButton = document.getElementById('jumpButton');
+
+        function updateScore() {
+            score += 1;
+            scoreDisplay.textContent = `Счет: ${score}`;
+        }
+
+        function run() {
+            if (!isJumping) {
+                character.textContent = '🏃';
             }
-    
-            // Отправляем данные
-            tg.sendData(JSON.stringify(data))
-              .then(() => {
-                  // После успешной отправки закрываем окно
-                  tg.close();
-              })
-              .catch(error => {
-                document.getElementById("error").innerText = 'Ошибка отправки данных:', error;
-                  // Возможно, здесь вы захотите обработать ошибку
-              });
-        }); 
+            updateScore();
+        }
+
+        function jump() {
+            if (!isJumping) {
+                isJumping = true;
+                character.textContent = '🦘';
+                character.style.transform = 'translateY(-50px)';
+                setTimeout(() => {
+                    character.style.transform = 'translateY(0)';
+                    setTimeout(() => {
+                        character.textContent = '🏃';
+                        isJumping = false;
+                    }, 300);
+                }, 500);
+            }
+        }
+
+        jumpButton.addEventListener('click', jump);
+
+        // Автоматический бег
+        setInterval(run, 200);
+
+        // Инициализация Telegram Mini App
+        window.Telegram.WebApp.ready();
     </script>
-    
 </body>
 </html>
