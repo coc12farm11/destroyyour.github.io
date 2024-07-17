@@ -14,24 +14,50 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            overflow: hidden;
         }
         #game {
             text-align: center;
+            position: relative;
+            width: 300px;
+            height: 200px;
         }
         #character {
             font-size: 40px;
-            margin-bottom: 20px;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            transition: transform 0.3s ease-out;
         }
         #ground {
-            width: 200px;
+            width: 100%;
             height: 20px;
             background-color: #333;
-            margin: 0 auto;
+            position: absolute;
+            bottom: 0;
+        }
+        .obstacle {
+            position: absolute;
+            bottom: 20px;
+            right: -20px;
+            width: 20px;
+            height: 40px;
+            background-color: #f00;
+            animation: moveLeft 2s linear infinite;
+        }
+        @keyframes moveLeft {
+            0% { right: -20px; }
+            100% { right: 320px; }
+        }
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
         }
         button {
             font-size: 18px;
             padding: 10px 20px;
-            margin-top: 20px;
+            margin-top: 220px;
         }
     </style>
 </head>
@@ -46,18 +72,20 @@
     <script>
         let score = 0;
         let isJumping = false;
+        let runningInterval;
         const character = document.getElementById('character');
         const scoreDisplay = document.getElementById('score');
         const jumpButton = document.getElementById('jumpButton');
+        const game = document.getElementById('game');
 
         function updateScore() {
             score += 1;
             scoreDisplay.textContent = `Счет: ${score}`;
         }
 
-        function run() {
+        function running() {
             if (!isJumping) {
-                character.textContent = '🏃';
+                character.textContent = character.textContent === '🏃' ? '🏃‍♂️' : '🏃';
             }
             updateScore();
         }
@@ -66,7 +94,7 @@
             if (!isJumping) {
                 isJumping = true;
                 character.textContent = '🦘';
-                character.style.transform = 'translateY(-50px)';
+                character.style.transform = 'translateY(-80px)';
                 setTimeout(() => {
                     character.style.transform = 'translateY(0)';
                     setTimeout(() => {
@@ -77,10 +105,23 @@
             }
         }
 
+        function createObstacle() {
+            const obstacle = document.createElement('div');
+            obstacle.classList.add('obstacle');
+            game.appendChild(obstacle);
+
+            setTimeout(() => {
+                obstacle.remove();
+            }, 2000);
+        }
+
         jumpButton.addEventListener('click', jump);
 
         // Автоматический бег
-        setInterval(run, 200);
+        runningInterval = setInterval(running, 200);
+
+        // Создание препятствий
+        setInterval(createObstacle, 2000);
 
         // Инициализация Telegram Mini App
         window.Telegram.WebApp.ready();
