@@ -28,35 +28,58 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        function updateTimer() {
-            fetch('https://coc12farm11.github.io/testpages')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.end_time) {
-                        const endTime = new Date(data.end_time);
-                        const now = new Date();
-                        const diff = endTime - now;
-
-                        if (diff > 0) {
-                            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                            document.getElementById('timer').innerText = 
-                                `${days}d ${hours}h ${minutes}m ${seconds}s`;
-                        } else {
-                            document.getElementById('timer').innerText = 'Таймер истек!';
-                        }
-                    } else {
-                        document.getElementById('timer').innerText = 'Таймер не установлен';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('timer').innerText = 'Ошибка загрузки таймера';
-                });
+        function getEndTime() {
+            return localStorage.getItem('endTime');
         }
+
+        function setEndTime(endTime) {
+            localStorage.setItem('endTime', endTime);
+        }
+
+        function updateTimer() {
+            const endTimeString = getEndTime();
+            if (endTimeString) {
+                const endTime = new Date(endTimeString);
+                const now = new Date();
+                const diff = endTime - now;
+
+                if (diff > 0) {
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                    document.getElementById('timer').innerText = 
+                        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                } else {
+                    document.getElementById('timer').innerText = 'Таймер истек!';
+                    localStorage.removeItem('endTime');
+                }
+            } else {
+                document.getElementById('timer').innerText = 'Таймер не установлен';
+            }
+        }
+
+        // Функция для обработки данных, полученных от бота
+        function handleBotData(data) {
+            if (data && data.end_time) {
+                setEndTime(data.end_time);
+                updateTimer();
+            }
+        }
+
+        // Слушаем сообщения от бота
+        tg.onEvent('viewportChanged', function(){
+            const botData = tg.initDataUnsafe?.data;
+            if (botData) {
+                try {
+                    const parsedData = JSON.parse(botData);
+                    handleBotData(parsedData);
+                } catch (e) {
+                    console.error('Failed to parse bot data:', e);
+                }
+            }
+        });
 
         updateTimer();
         setInterval(updateTimer, 1000);
