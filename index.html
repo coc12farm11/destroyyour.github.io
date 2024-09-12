@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timer Web App</title>
+    <title>Timer WebApp</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -13,7 +13,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: #f0f2f5;
         }
         #timer {
             font-size: 2em;
@@ -25,53 +25,41 @@
     <div id="timer">Загрузка таймера...</div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        let tg = window.Telegram.WebApp;
         tg.expand();
 
-        const BOT_SERVER_URL = 'https://coc12farm11.github.io/testpages/';
+        function updateTimer() {
+            fetch('https://coc12farm11.github.io/testpages//get-timer')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.end_time) {
+                        const endTime = new Date(data.end_time);
+                        const now = new Date();
+                        const diff = endTime - now;
 
-        function updateTimer(endTime) {
-            const timerElement = document.getElementById('timer');
-            
-            function update() {
-                const now = new Date().getTime();
-                const distance = endTime - now;
+                        if (diff > 0) {
+                            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-                if (distance < 0) {
-                    timerElement.innerHTML = "Время истекло!";
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-            }
-
-            update();
-            setInterval(update, 1000);
+                            document.getElementById('timer').innerText = 
+                                `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                        } else {
+                            document.getElementById('timer').innerText = 'Таймер истек!';
+                        }
+                    } else {
+                        document.getElementById('timer').innerText = 'Таймер не установлен';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('timer').innerText = 'Ошибка загрузки таймера';
+                });
         }
 
-        async function getTimerData() {
-            try {
-                const response = await fetch(`${BOT_SERVER_URL}/get_timer`);
-                const data = await response.json();
-                if (data.end_time) {
-                    updateTimer(new Date(data.end_time).getTime());
-                } else {
-                    document.getElementById('timer').innerHTML = "Таймер не установлен";
-                }
-            } catch (error) {
-                console.error('Ошибка при получении данных таймера:', error);
-                document.getElementById('timer').innerHTML = "Ошибка загрузки таймера";
-            }
-        }
-
-        getTimerData();
-
-        tg.sendData("opened");
+        updateTimer();
+        setInterval(updateTimer, 1000);
     </script>
 </body>
 </html>
