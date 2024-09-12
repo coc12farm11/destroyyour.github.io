@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timer WebApp</title>
+    <title>Timer</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
@@ -13,76 +13,87 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f2f5;
+            background-color: #f0f0f0;
+        }
+        #timer-container {
+            text-align: center;
         }
         #timer {
             font-size: 2em;
-            text-align: center;
+            margin-bottom: 10px;
+        }
+        #error-message {
+            color: red;
+            font-size: 1.2em;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div id="timer">Загрузка таймера...</div>
+    <div id="timer-container">
+        <div id="timer">Loading...</div>
+        <div id="error-message"></div>
+    </div>
 
     <script>
-        let tg = window.Telegram.WebApp;
+        const tg = window.Telegram.WebApp;
         tg.expand();
 
-        function getEndTime() {
-            return localStorage.getItem('endTime');
-        }
+        const timerElement = document.getElementById('timer');
+        const errorMessageElement = document.getElementById('error-message');
 
-        function setEndTime(endTime) {
-            localStorage.setItem('endTime', endTime);
+        function showError(message) {
+            errorMessageElement.textContent = message;
+            timerElement.textContent = 'Ошибка';
         }
 
         function updateTimer() {
-            const endTimeString = getEndTime();
-            if (endTimeString) {
-                const endTime = new Date(endTimeString);
+            try {
                 const now = new Date();
-                const diff = endTime - now;
+                const difference = endTime - now;
 
-                if (diff > 0) {
-                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                if (difference > 0) {
+                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-                    document.getElementById('timer').innerText = 
-                        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                    timerElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                 } else {
-                    document.getElementById('timer').innerText = 'Таймер истек!';
-                    localStorage.removeItem('endTime');
+                    timerElement.textContent = 'Время истекло!';
+                    clearInterval(timerInterval);
                 }
-            } else {
-                document.getElementById('timer').innerText = 'Таймер не установлен';
+            } catch (error) {
+                showError('Произошла ошибка при обновлении таймера.');
+                console.error('Error updating timer:', error);
+                clearInterval(timerInterval);
             }
         }
 
-        // Функция для обработки данных, полученных от бота
-        function handleBotData(data) {
-            if (data && data.end_time) {
-                setEndTime(data.end_time);
-                updateTimer();
+        // Получаем end_time из URL параметров
+        const urlParams = new URLSearchParams(window.location.search);
+        const endTimeStr = urlParams.get('end_time');
+
+        let endTime;
+        let timerInterval;
+
+        try {
+            if (!endTimeStr) {
+                throw new Error('Параметр end_time отсутствует в URL.');
             }
+
+            endTime = new Date(endTimeStr);
+
+            if (isNaN(endTime.getTime())) {
+                throw new Error('Неверный формат времени окончания.');
+            }
+
+            timerInterval = setInterval(updateTimer, 1000);
+            updateTimer();
+        } catch (error) {
+            showError(`Ошибка инициализации таймера: ${error.message}`);
+            console.error('Error initializing timer:', error);
         }
-
-        // Слушаем сообщения от бота
-        tg.onEvent('viewportChanged', function(){
-            const botData = tg.initDataUnsafe?.data;
-            if (botData) {
-                try {
-                    const parsedData = JSON.parse(botData);
-                    handleBotData(parsedData);
-                } catch (e) {
-                    console.error('Failed to parse bot data:', e);
-                }
-            }
-        });
-
-        updateTimer();
-        setInterval(updateTimer, 1000);
     </script>
 </body>
 </html>
