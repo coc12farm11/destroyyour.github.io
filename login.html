@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAI Pump - Авторизация</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <img src="img/logo.jpg" alt="AAI Pump Logo" class="logo">
+                <h1>AAI Pump</h1>
+            </div>
+            <form id="auth-form" class="login-form">
+                <div class="input-group">
+                    <input type="password" id="auth-key" required>
+                    <label for="auth-key">Ключ авторизации</label>
+                    <span class="input-line"></span>
+                </div>
+                <button type="submit" class="login-button">
+                    <span>Войти</span>
+                    <div class="button-loader"></div>
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="scripts/fingerprint.js"></script>
+    <script src="scripts/login.js"></script>
+</body>
+</html> 

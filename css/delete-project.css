@@ -1,0 +1,119 @@
+/* Стили для проектов в навигации */
+.nav_pro_item {
+    position: relative;
+    padding-right: 35px; /* Место для крестика */
+}
+
+/* Стили для кнопки удаления */
+.delete-project-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-project-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: #dc3545;
+    transition: transform 0.3s ease;
+}
+
+.delete-project-btn:hover svg {
+    transform: scale(1.1);
+}
+
+.nav_pro_item:hover .delete-project-btn {
+    opacity: 1;
+}
+
+/* Модальное окно */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+    transform: scale(0.7);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal-overlay.active .modal-container {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #29262d;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.modal-btn {
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-btn-cancel {
+    background-color: #e9ecef;
+    border: 1px solid #dde0e3;
+    color: #495057;
+}
+
+.modal-btn-cancel:hover {
+    background-color: #dde0e3;
+}
+
+.modal-btn-confirm {
+    background-color: #dc3545;
+    border: none;
+    color: white;
+}
+
+.modal-btn-confirm:hover {
+    background-color: #c82333;
+}

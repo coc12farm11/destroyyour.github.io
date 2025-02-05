@@ -1,0 +1,68 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAI Pump - Админ панель</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <div class="header-logo">
+                <img src="../img/logo.jpg" alt="AAI Pump Logo" class="logo">
+                <h1>AAI Pump Admin</h1>
+            </div>
+            <button id="logout-btn" class="logout-button">Выйти</button>
+        </header>
+
+        <main class="admin-content">
+            <section class="auth-keys-section">
+                <div class="section-header">
+                    <h2>Ключи доступа</h2>
+                    <button id="add-key-btn" class="primary-button">Создать ключ</button>
+                </div>
+
+                <div class="keys-table-container">
+                    <table class="keys-table">
+                        <thead>
+                            <tr>
+                                <th>Ключ</th>
+                                <th>Описание</th>
+                                <th>Дата создания</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="keys-table-body">
+                            <!-- Данные будут добавлены через JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Модальное окно для создания ключа -->
+    <div id="add-key-modal" class="modal">
+        <div class="modal-content">
+            <h2>Создать ключ доступа</h2>
+            <form id="add-key-form">
+                <div class="input-group">
+                    <input type="text" id="key-description" required>
+                    <label for="key-description">Описание</label>
+                    <span class="input-line"></span>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="secondary-button" onclick="closeModal()">Отмена</button>
+                    <button type="submit" class="primary-button">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../scripts/admin-panel.js"></script>
+</body>
+</html> 
